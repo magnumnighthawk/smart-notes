@@ -1,10 +1,15 @@
-// Code generated via "Slingshot" 
+// Import necessary modules
 const express = require('express');
 const { Note, Category } = require('../db');
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require('sequelize');
+const HfInference = require('@huggingface/inference').HfInference;
 
+// Initialize Express Router
 const router = express.Router();
+
+// Initialize Hugging Face Inference with your API key
+const hf = new HfInference(process.env.HUGGING_FACE_API_KEY);
 
 // Transform the notes to include 'category' with lowercase casing
 const transformedNote = (note) => ({
@@ -89,6 +94,33 @@ router.get('/categories', async (req, res) => {
     res.json(categories);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch categories' });
+  }
+});
+
+// Suggest category based on content using Hugging Face
+router.post('/suggest-category', async (req, res) => {
+  const { content } = req.body;
+
+  try {
+    // Use the request method for a custom call
+    const response = await hf.request({
+      model: 'facebook/bart-large-mnli',
+      inputs: content,
+      parameters: { candidate_labels: ['Work', 'Personal', 'Ideas'] },
+    });
+
+    // Check if the response is in the expected format
+    if (response.labels) {
+      const suggestedCategory = response.labels[0];
+      res.json({ suggestedCategory });
+    } else {
+      console.error('Unexpected response format:', response);
+      throw new Error('Unexpected response format');
+    }
+  } catch (error) {
+    console.error('Error during Hugging Face API call:', error.message);
+    console.error('Stack trace:', error.stack);
+    res.status(500).json({ error: 'Failed to suggest category.' });
   }
 });
 

@@ -32,7 +32,7 @@ const StyledButton = styled(Button)({
 interface NoteFormProps {
   categories: Category[];
   addNote: (noteData: Partial<Note>) => Promise<void>;
-  updateNote: (noteData: Note) => Promise<void>; // Update to Promise<void>
+  updateNote: (noteData: Note) => Promise<void>;
   editingNote: Note | null;
 }
 
@@ -52,7 +52,8 @@ export default function NoteForm({
     category: { name: "" },
   });
   const [newCategory, setNewCategory] = useState("");
-  const [categoryOptions, setCategoryOptions] = useState<AutocompleteOption[]>(categories);
+  const [categoryOptions, setCategoryOptions] =
+    useState<(AutocompleteOption | string)[]>(categories);
 
   useEffect(() => {
     if (editingNote) {
@@ -74,7 +75,7 @@ export default function NoteForm({
     if (typeof value === "string") {
       setNewCategory(value);
       setNewNote((prevNote) => ({ ...prevNote, category: { name: value } }));
-    } else if (value && 'inputValue' in value) {
+    } else if (value && "inputValue" in value) {
       setNewCategory(value.inputValue);
       setNewNote((prevNote) => ({
         ...prevNote,
@@ -106,6 +107,25 @@ export default function NoteForm({
     }
   };
 
+  const handleSuggestCategory = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/api/notes/suggest-category`,
+        { content: newNote.content }
+      );
+      const suggestedCategory = response.data.suggestedCategory;
+      setCategoryOptions((prevOptions) => [
+        ...prevOptions.filter(
+          (cat) =>
+            typeof cat != "string" || cat.includes("Suggested") === false
+        ),
+        `Suggested: ${suggestedCategory}`,
+      ]);
+    } catch (error) {
+      console.error("Error suggesting category:", error);
+    }
+  };
+
   const handleAddOrUpdateNote = () => {
     const noteData: Note = {
       ...newNote,
@@ -134,16 +154,13 @@ export default function NoteForm({
         fullWidth
         margin="normal"
       />
-      <label htmlFor="content-editor" id="content-editor-label">
-        Content
-      </label>
       <ReactQuill
         id="content-editor"
-        aria-labelledby="content-editor-label"
         value={newNote.content || ""}
         onChange={(value) =>
           setNewNote((prevNote) => ({ ...prevNote, content: value }))
         }
+        placeholder="Enter note content here..."
         modules={{
           toolbar: [
             [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -182,7 +199,9 @@ export default function NoteForm({
         onChange={handleCategoryChange}
         filterOptions={(options, params) => {
           const filtered = filter(
-            options.map(option => typeof option === 'string' ? { inputValue: option } : option),
+            options.map((option) =>
+              typeof option === "string" ? { inputValue: option } : option
+            ),
             params
           );
           if (params.inputValue !== "") {
@@ -198,7 +217,7 @@ export default function NoteForm({
           if (typeof option === "string") {
             return option;
           }
-          if ('inputValue' in option) {
+          if ("inputValue" in option) {
             return option.inputValue;
           }
           return option.name;
@@ -209,6 +228,7 @@ export default function NoteForm({
             label="Category"
             margin="normal"
             fullWidth
+            onFocus={handleSuggestCategory}
             onChange={(e) => handleCategorySearch(e.target.value)}
           />
         )}
