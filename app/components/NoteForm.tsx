@@ -98,7 +98,7 @@ export default function NoteForm({
   const handleCategorySearch = async (query: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:5002/api/notes/categories?query=${query}`
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/api/notes/categories?query=${query}`
       );
       setCategoryOptions(response.data);
     } catch (error) {

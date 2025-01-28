@@ -40,7 +40,7 @@ export default function Home() {
 
   const fetchNotes = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/api/notes');
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/api/notes`);
       setNotes(response.data);
     } catch (error) {
       console.error('Error fetching notes:', error);
@@ -49,7 +49,7 @@ export default function Home() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/api/notes/categories');
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/api/notes/categories`);
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -58,7 +58,7 @@ export default function Home() {
 
   const addNote = async (noteData: Partial<Note>) => {
     try {
-      await axios.post('http://localhost:5002/api/notes', noteData);
+      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/api/notes`, noteData);
       fetchNotes();
     } catch (error) {
       console.error('Error adding note:', error);
@@ -67,7 +67,7 @@ export default function Home() {
 
   const updateNote = async (noteData: Note) => {
     try {
-      await axios.put(`http://localhost:5002/api/notes/${noteData.id}`, noteData);
+      await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/api/notes/${noteData.id}`, noteData);
       fetchNotes();
       setEditingNote(null);
     } catch (error) {
@@ -77,7 +77,7 @@ export default function Home() {
 
   const deleteNote = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5002/api/notes/${id}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/api/notes/${id}`);
       fetchNotes();
     } catch (error) {
       console.error('Error deleting note:', error);
