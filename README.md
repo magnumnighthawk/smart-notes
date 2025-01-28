@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smart Notes Organizer - Frontend
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Smart Notes Organizer is a web application designed to help users efficiently manage and organize their notes. This document provides an overview of the frontend features and technologies used in the application.
+
+## Features
+
+- **Note Management**: Create, edit, and delete notes with ease.
+- **Rich Text Editing**: Utilize a rich text editor for note content with support for formatting, links, and media.
+- **Category Management**: Organize notes into categories for better management.
+- **Responsive Design**: The application is designed to be responsive and works well on various screen sizes.
+
+## Technologies Used
+
+- **React**: A JavaScript library for building user interfaces.
+- **Next.js**: A React framework for server-side rendering and static site generation.
+- **Material-UI**: A popular React UI framework for building responsive and accessible components.
+- **Axios**: A promise-based HTTP client for making API requests.
+- **React-Quill**: A rich text editor component for React.
+- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
+
+## Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone <repository-url>
+   cd smart-notes-organizer
+   ```
+
+2. **Install Dependencies**:
+   Run the following command to install all necessary packages:
+   ```bash
+   npm install
+   ```
+
+## Running the Application
+
+To start the application in development mode, use the following command:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Access the application at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Add a Note**: Use the form to add a new note with a title, content, and category.
+- **Edit a Note**: Click the edit icon next to a note to modify its details.
+- **Delete a Note**: Click the delete icon to remove a note.
+- **View Categories**: Fetch and view all available categories.
 
-## Learn More
+## Contributing
 
-To learn more about Next.js, take a look at the following resources:
+We welcome contributions! Please follow these steps:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Commit your changes (`git commit -m 'Add your feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
+5. Open a Pull Request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ensure your code follows the existing coding standards and includes tests.
